@@ -1,3 +1,4 @@
-from app.app import App
+from app import App
+
 
 app = App()
