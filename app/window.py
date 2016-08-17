@@ -24,7 +24,7 @@ class GravitationalSystemDrawer:
                              height=window_height, bg=canvas_color)
 
         self.system = gravitational_system
-        self.points = []
+        self.screen_elements = []
 
         self.__update_elements()
 
@@ -52,7 +52,7 @@ class GravitationalSystemDrawer:
         for system_point in system_points:
             found = False
 
-            for element in self.points:
+            for element in self.screen_elements:
 
                 if system_point.id != element['id']:
                     continue
@@ -63,9 +63,9 @@ class GravitationalSystemDrawer:
                 dx = get_x(delta)
                 dy = get_y(delta)
 
-                self.canvas.move(element['point'], dx, dy)
+                self.canvas.move(element['screen_point'], dx, dy)
 
-                pos = self.canvas.coords(element['point'])
+                pos = self.canvas.coords(element['screen_point'])
 
                 element['position'] = np.array([
                     pos[0] + (pos[2] - pos[0]) / 2,
@@ -79,12 +79,13 @@ class GravitationalSystemDrawer:
             if not found:
                 # TODO more drawable objects (e.g. moving-vectors)
 
-                self.points.append({
+                self.screen_elements.append({
                     'id': system_point.id,
-                    'point': self.__create_point(get_x(system_point.position),
-                                                 get_y(system_point.position),
-                                                 system_point.radius,
-                                                 color=system_point.color),
+                    'screen_point': self.__create_point(
+                        get_x(system_point.position),
+                        get_y(system_point.position),
+                        system_point.radius,
+                        color=system_point.color),
                     'position': system_point.position
                 })
 

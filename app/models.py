@@ -1,4 +1,5 @@
 import numpy as np
+from helper import randomize_particles
 
 
 class GravitationalSystem:
@@ -21,7 +22,8 @@ class GravitationalSystem:
                     self.color)
 
     def __init__(self, particles, G, dt):
-        self.particles = self.__parse_particles(particles)
+        self.particles = self.__parse_particles(
+            particles if particles != 'random' else randomize_particles(50))
         self.G = G
         self.dt = dt
 
