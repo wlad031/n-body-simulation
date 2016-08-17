@@ -18,21 +18,9 @@ class GravitationalSystemDrawer:
                              height=window_height, bg=canvas_color)
 
         self.system = gravitational_system
-        system_points = self.system.get_particles()
         self.points = []
 
-        for particle in system_points:
-            x = get_x(particle.position)
-            y = get_y(particle.position)
-            r = particle.radius
-            color = particle.color
-
-            # TODO more drawable objects (e.g. moving-vectors)
-
-            self.points.append({
-                'point': self.__create_point(x, y, r, color=color),
-                'position': particle.position
-            })
+        self.__update_elements()
 
         self.canvas.pack()
         self.root.after(0, self.animation)
@@ -44,29 +32,55 @@ class GravitationalSystemDrawer:
             time.sleep(self.__DEFAULT_ANIMATION_DELAY)
 
             self.system.update_state()
-            system_points = self.system.get_particles()
 
-            for i in range(len(system_points)):
-                delta = system_points[i].position - self.points[i]['position']
+            try:
+                self.__update_elements()
+                self.canvas.update()
+            except Exception as e:
+                print e
+                return
+
+    def __update_elements(self):
+        system_points = self.system.get_particles()
+
+        for system_point in system_points:
+            found = False
+
+            for element in self.points:
+
+                if system_point.id != element['id']:
+                    continue
+
+                # Update screen elements
+
+                delta = system_point.position - element['position']
                 dx = get_x(delta)
                 dy = get_y(delta)
 
-                try:
-                    self.canvas.move(self.points[i]['point'], dx, dy)
+                self.canvas.move(element['point'], dx, dy)
 
-                    pos = self.canvas.coords(self.points[i]['point'])
+                pos = self.canvas.coords(element['point'])
 
-                    self.points[i]['position'] = np.array([
-                        pos[0] + (pos[2] - pos[0]) / 2,
-                        pos[1] + (pos[3] - pos[1]) / 2
-                    ])
+                element['position'] = np.array([
+                    pos[0] + (pos[2] - pos[0]) / 2,
+                    pos[1] + (pos[3] - pos[1]) / 2
+                ])
 
-                    self.canvas.update()
-                except Exception:
-                    return
+                found = True
+                break
 
-    def __update_elements(self, system_points):
-        pass
+            # Add new elements, if needed
+            if not found:
+                # TODO more drawable objects (e.g. moving-vectors)
+
+                self.points.append({
+                    'id': system_point.id,
+                    'point': self.__create_point(get_x(system_point.position),
+                                                 get_y(system_point.position),
+                                                 system_point.radius,
+                                                 color=system_point.color),
+                    'position': system_point.position
+                })
 
     def __create_point(self, x, y, r, color):
         return self.canvas.create_oval(x - r, y - r, x + r, y + r, fill=color,
