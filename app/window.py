@@ -9,7 +9,7 @@ class GravitationalSystemDrawer:
     __DEFAULT_ANIMATION_DELAY = 0.025
     __PAUSE = False
 
-    def __init__(self, gravitationalSystem, window_width, window_height,
+    def __init__(self, gravitational_system, window_width, window_height,
                  canvas_color):
 
         self.root = Tk()
@@ -17,7 +17,7 @@ class GravitationalSystemDrawer:
         self.canvas = Canvas(self.root, width=window_width,
                              height=window_height, bg=canvas_color)
 
-        self.system = gravitationalSystem
+        self.system = gravitational_system
         system_points = self.system.get_particles()
         self.points = []
 

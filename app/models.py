@@ -1,6 +1,4 @@
 import numpy as np
-from helper import *
-from math import sqrt
 
 
 class GravitationalSystem:
@@ -59,6 +57,7 @@ class GravitationalSystem:
     def __parse_particles(self, arr):
         res = []
 
+        # Available particle properties
         properties = {
             'id': int,
             'position': np.array,
@@ -71,6 +70,7 @@ class GravitationalSystem:
         for p in arr:
             particle = self.Particle()
 
+            # noinspection PyShadowingBuiltins
             for property in properties.keys():
                 if p[property] is not None:
                     # :)))
