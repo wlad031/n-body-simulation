@@ -1,6 +1,12 @@
 import time
 import numpy as np
-from Tkinter import *
+
+try:
+    # noinspection PyUnresolvedReferences
+    from Tkinter import *
+except ImportError:
+    # noinspection PyUnresolvedReferences
+    from tkinter import *
 
 from helper import *
 
