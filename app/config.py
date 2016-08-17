@@ -1,6 +1,6 @@
 AppConfig = {
 
-    'window_width': 640,
+    'window_width': 1024,
     'window_height': 640,
 }
 
@@ -10,7 +10,26 @@ GravitationalSystemConfig = {
     'G': 6.0e-1,
     'dt': 0.1,
 
-    'particles': 'random',
+    'particles':
+        [
+            {
+                'id': 0,
+                'position': [120, 320],
+                'speed': [0, 0],
+                'mass': 10000,
+                'radius': 4,
+                'color': '#0000FF',
+            },
+
+            {
+                'id': 1,
+                'position': [320, 320],
+                'speed': [0, 0],
+                'mass': 10000,
+                'radius': 4,
+                'color': '#00FFFF',
+            },
+        ],
     # [
     #
     #     {

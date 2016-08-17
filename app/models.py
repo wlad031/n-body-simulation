@@ -7,6 +7,7 @@ class GravitationalSystem:
     class Particle:
         id = 0
         acceleration = 0
+        force = np.array([0, 0])
         position = np.array([0, 0])
         speed = np.array([0, 0])
         mass = np.float32(0)
@@ -16,7 +17,6 @@ class GravitationalSystem:
         def __str__(self):
             return (str(self.id) + ' ' +
                     str(self.position) + ' ' +
-                    str(self.speed) + ' ' +
                     str(self.mass) + ' ' +
                     str(self.radius) + ' ' +
                     self.color)
@@ -31,7 +31,7 @@ class GravitationalSystem:
     def update_state(self):
         for p_i in self.particles:
 
-            F = 0
+            p_i.force = 0
 
             for p_j in self.particles:
 
@@ -42,10 +42,9 @@ class GravitationalSystem:
                 r_ij = np.linalg.norm(r)
                 F_ij = self.G * p_i.mass * p_j.mass / r_ij ** 3 * r
 
-                F += F_ij
+                p_i.force += F_ij
 
-            p_i.acceleration = F / p_i.mass
-
+            p_i.acceleration = p_i.force / p_i.mass
             p_i.speed = p_i.speed + p_i.acceleration * self.dt
             p_i.position = p_i.position + p_i.speed * self.dt
 
