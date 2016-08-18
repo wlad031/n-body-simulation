@@ -39,57 +39,31 @@ class GravitationalSystemDrawer:
 
             self.system.update_state()
 
-            try:
-                self.__update_elements()
-                self.canvas.update()
-            except Exception as e:
-                print e
-                return
+            self.__update_elements()
+            self.canvas.update()
 
     def __update_elements(self):
         system_points = self.system.get_particles()
 
+        self.canvas.delete('all')
+
         for system_point in system_points:
-            found = False
+            # TODO more drawable objects (e.g. moving-vectors)
+            self.screen_elements.append({
+                'id': system_point.id,
+                'screen_point': self.__create_point(
+                    system_point.position,
+                    system_point.radius,
+                    system_point.color),
+                'position': system_point.position,
+                'force': self.__create_line(
+                    system_point.position,
+                    system_point.position + system_point.force / 100,
+                    system_point.color)
+            })
 
-            for element in self.screen_elements:
-
-                if system_point.id != element['id']:
-                    continue
-
-                # Update screen elements
-
-                delta = system_point.position - element['position']
-                dx = get_x(delta)
-                dy = get_y(delta)
-
-                self.canvas.move(element['screen_point'], dx, dy)
-
-                pos = self.canvas.coords(element['screen_point'])
-
-                element['position'] = np.array([
-                    pos[0] + (pos[2] - pos[0]) / 2,
-                    pos[1] + (pos[3] - pos[1]) / 2
-                ])
-
-                found = True
-                break
-
-            # Add new elements, if needed
-            if not found:
-                # TODO more drawable objects (e.g. moving-vectors)
-
-                self.screen_elements.append({
-                    'id': system_point.id,
-                    'screen_point': self.__create_point(
-                        get_x(system_point.position),
-                        get_y(system_point.position),
-                        system_point.radius,
-                        color=system_point.color),
-                    'position': system_point.position
-                })
-
-    def __create_point(self, x, y, r, color):
+    def __create_point(self, x1, r, color):
+        x, y = get_x(x1), get_y(x1)
         return self.canvas.create_oval(x - r, y - r, x + r, y + r, fill=color,
                                        outline=color)
 

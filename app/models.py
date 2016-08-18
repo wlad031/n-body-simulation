@@ -17,6 +17,7 @@ class GravitationalSystem:
         def __str__(self):
             return (str(self.id) + ' ' +
                     str(self.position) + ' ' +
+                    str(self.speed) + ' ' +
                     str(self.mass) + ' ' +
                     str(self.radius) + ' ' +
                     self.color)
@@ -29,6 +30,9 @@ class GravitationalSystem:
 
     # noinspection PyPep8Naming,PyAugmentAssignment,PyTypeChecker
     def update_state(self):
+
+        to_join = []
+
         for p_i in self.particles:
 
             p_i.force = 0
@@ -40,6 +44,15 @@ class GravitationalSystem:
 
                 r = p_j.position - p_i.position
                 r_ij = np.linalg.norm(r)
+
+                if r_ij <= p_i.radius + p_j.radius:
+                    if {'first': p_j, 'second': p_i} not in to_join:
+                        to_join.append({
+                            'first': p_i,
+                            'second': p_j,
+                        })
+                    break
+
                 F_ij = self.G * p_i.mass * p_j.mass / r_ij ** 3 * r
 
                 p_i.force += F_ij
@@ -47,6 +60,28 @@ class GravitationalSystem:
             p_i.acceleration = p_i.force / p_i.mass
             p_i.speed = p_i.speed + p_i.acceleration * self.dt
             p_i.position = p_i.position + p_i.speed * self.dt
+
+        for joining in to_join:
+            particle = self.Particle()
+
+            if joining['first'].mass >= joining['second'].mass:
+                first = joining['first']
+                second = joining['second']
+            else:
+                first = joining['second']
+                second = joining['first']
+
+            particle.position = first.position
+            particle.mass = first.mass + second.mass
+            particle.speed = (first.mass * first.speed +
+                             second.mass * second.speed) / particle.mass
+            particle.radius = first.radius + int(second.radius / 2)
+            particle.color = first.color
+            particle.id = self.particles[-1].id + 1
+
+            self.particles.append(particle)
+            self.particles.remove(joining['first'])
+            self.particles.remove(joining['second'])
 
     def get_particles(self):
         return self.particles
