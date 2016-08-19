@@ -22,10 +22,10 @@ class GravitationalSystem:
                     str(self.radius) + ' ' +
                     self.color)
 
-    def __init__(self, particles, G, dt):
+    def __init__(self, particles, g, dt):
         self.particles = self.__parse_particles(
             particles if particles != 'random' else randomize_particles(50))
-        self.G = G
+        self.G = g
         self.dt = dt
 
     # noinspection PyPep8Naming,PyAugmentAssignment,PyTypeChecker
@@ -74,7 +74,7 @@ class GravitationalSystem:
             particle.position = first.position
             particle.mass = first.mass + second.mass
             particle.speed = (first.mass * first.speed +
-                             second.mass * second.speed) / particle.mass
+                              second.mass * second.speed) / particle.mass
             particle.radius = first.radius + int(second.radius / 2)
             particle.color = first.color
             particle.id = self.particles[-1].id + 1

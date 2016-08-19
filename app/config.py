@@ -6,7 +6,7 @@ AppConfig = {
 
 GravitationalSystemConfig = {
 
-    'color': '#222222',
+    'color': '#222244',
     'G': 6.0e-1,
     'dt': 0.1,
 

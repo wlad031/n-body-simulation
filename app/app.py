@@ -6,7 +6,7 @@ from config import GravitationalSystemConfig as gsc, AppConfig as ac
 
 class App:
     def __init__(self):
-        self.system = GravitationalSystem(G=gsc.get('G', 6.0e-1),
+        self.system = GravitationalSystem(g=gsc.get('G', 6.0e-1),
                                           dt=gsc.get('dt', 0.1),
                                           particles=gsc.get('particles', []))
 

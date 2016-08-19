@@ -1,5 +1,6 @@
 import random
 
+# noinspection PyPep8Naming
 from config import AppConfig as ac
 
 
@@ -11,6 +12,7 @@ def get_y(array):
     return array[1]
 
 
+# noinspection PyPep8Naming
 def randomize_particles(num):
     res = []
 
@@ -21,8 +23,8 @@ def randomize_particles(num):
     MIN_RADIUS = 1
 
     for i in range(num):
-        r = lambda: random.randint(0, 255)
-        color = '#%02X%02X%02X' % (r(), r(), r())
+        randint = lambda: random.randint(0, 255)
+        color = '#%02X%02X%02X' % (randint(), randint(), randint())
 
         res.append({
             'id': i,
