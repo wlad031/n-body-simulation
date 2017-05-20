@@ -15,12 +15,7 @@ class GravitationalSystem:
         color = 'black'
 
         def __str__(self):
-            return (str(self.id) + ' ' +
-                    str(self.position) + ' ' +
-                    str(self.speed) + ' ' +
-                    str(self.mass) + ' ' +
-                    str(self.radius) + ' ' +
-                    self.color)
+            return (' '.join(map(str, [self.id, self.position, self.speed, self.mass, self.radius, self.color])))
 
     def __init__(self, particles, g, dt):
         self.particles = self.__parse_particles(
